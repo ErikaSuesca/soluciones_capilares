@@ -2,7 +2,7 @@ import React from "react";
 import aceites from '../img/aceites.jpg';
 import shampoo from '../img/shampoo.jpg';
 import kit_completo from '../img/kit_completo.jpg';
-import './style.css';
+import './Style.css';
 
 function Introduccion() {
     return (

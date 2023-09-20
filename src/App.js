@@ -4,7 +4,7 @@ import{
   Routes,
   Route,
 } from "react-router-dom";
-import Home from "./PaginaPrincipal/Home"
+import Home from "./PaginaPrincipal/Inicio"
 import Menu from "./PaginaPrincipal/Introduccion"
 
 const App = () => {

@@ -1,8 +1,10 @@
 import React from "react";
 import Introduccion from "./Introduccion";
 import BotonRegistro from "./BotonRegistro"
+import PieDePagina from "./PieDePagina";
 import Logo from "../img/Logo_SC.png";
-import './style.css';
+import './Style.css';
+
 
 function Home() {
   return (
@@ -15,7 +17,7 @@ function Home() {
       </div>
       <Introduccion />
       <BotonRegistro />
-
+      <PieDePagina />
 
     </div>
   );
