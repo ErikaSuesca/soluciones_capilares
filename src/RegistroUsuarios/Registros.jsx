@@ -98,7 +98,7 @@ class Registros extends Component {
     }
 
     return (
-      <div>
+      <div className='m-3'>
         <div className="text-center fuente h1 m-3">
           <h1>Tabla de Usuarios</h1>
         </div>
@@ -115,7 +115,7 @@ class Registros extends Component {
         </div>
 
         <div className="table-responsive">
-          <table className="table table-hover table-bordered  fuente m-4">
+          <table className="table table-hover table-bordered  fuente">
             <thead>
               <tr className='text-center'>
                 <th onClick={() => this.cambiarOrden('nombre')}>Nombre</th>
@@ -123,6 +123,7 @@ class Registros extends Component {
                 <th onClick={() => this.cambiarOrden('documento')}>Documento</th>
                 <th onClick={() => this.cambiarOrden('celular')}>Celular</th>
                 <th onClick={() => this.cambiarOrden('estado')}>Estado</th>
+                <th ></th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +135,7 @@ class Registros extends Component {
                   <td>{usuario.celular}</td>
                   <td className={this.obtenerColor(usuario.estado)}>{usuario.estado}</td>
                   <td>
-                    <button onClick={() => this.mostrarDetalle(usuario)}>Ver Detalles</button>
+                    <button className="btn btn-sm btn-link fuente" onClick={() => this.mostrarDetalle(usuario)}> + Info </button>
                   </td>
                 </tr>
               ))}

@@ -1,6 +1,6 @@
 .fuente {
     font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     text-align: left;
 };
@@ -8,5 +8,8 @@
 .campo-filtro {
     width: 20px; 
     height: 10px;
-    background-color: blue;
-  }
+};
+
+.table-responsive {
+    overflow-x: hidden;
+}
