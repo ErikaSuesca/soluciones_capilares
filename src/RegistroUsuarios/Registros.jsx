@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cargandoImagen from '../img/cargando.gif';
 import RegistoUsuario from './Formulario';
+import BtnAtras from './BotonAtras';
 import './Registros.css';
 
 class Registros extends Component {
@@ -103,16 +104,31 @@ class Registros extends Component {
           <h1>Tabla de Usuarios</h1>
         </div>
 
-        <div className="form-group fuente m-4">
-          <label htmlFor="filtro">Filtrar:</label>
-          <input
-            type="text"
-            id="filtro"
-            className="campo-filtro m-2"
-            value={filtro}
-            onChange={this.eventoFiltro}
-          />
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-6">
+              <div className="form-group fuente m-4 text-center">
+                <label htmlFor="filtro">Filtrar:</label>
+                <input
+                  type="text"
+                  id="filtro"
+                  className="campo-filtro m-2"
+                  value={filtro}
+                  onChange={this.eventoFiltro}
+                />
+              </div>
+            </div>
+            <div className="col-md-6 text-center " >
+              <BtnAtras />
+            </div>
+          </div>
         </div>
+
+
+          
+          
+          
+
 
         <div className="table-responsive">
           <table className="table table-hover table-bordered  fuente">
