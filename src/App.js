@@ -5,14 +5,14 @@ import{
   Route,
 } from "react-router-dom";
 import Home from "./PaginaPrincipal/Inicio"
-import Menu from "./PaginaPrincipal/Introduccion"
+import Registros from "./RegistroUsuarios/Registros"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/menu" element={<Menu/>} />
+        <Route path="/registros" element={<Registros/>} />
         </Routes>
       </BrowserRouter>
     )
