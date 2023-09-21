@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cargandoImagen from '../img/cargando.gif';
+import RegistoUsuario from './Formulario';
 import './Registros.css';
 
 class Registros extends Component {
@@ -8,8 +9,12 @@ class Registros extends Component {
     this.state = {
       usuarios: {},
       cargando: true,
-      currentPage: 1,
-      itemsPerPage: 10,
+      paginaActual: 1,
+      itemsPorPagina: 10,
+      usuarioSeleccionado: null,
+      ordenarPor: 'nombre',
+      orden: 'desc',
+      filtro: '',
     };
   }
 
@@ -26,13 +31,53 @@ class Registros extends Component {
       });
   }
 
-  // Función para cambiar el color del texto en función del estado
-  getColorForEstado(estado) {
+  mostrarDetalle = (usuario) => {
+    this.setState({ usuarioSeleccionado: usuario });
+  };
+
+  obtenerColor(estado) {
     return estado === 'Activo' ? 'text-success' : 'text-danger';
   }
 
+  cambiarOrden = (columna) => {
+    const { ordenarPor, orden } = this.state;
+    if (ordenarPor === columna) {
+      this.setState({ orden: orden === 'asc' ? 'desc' : 'asc' });
+    } else {
+      this.setState({ ordenarPor: columna, orden: 'asc' });
+    }
+  };
+
+  eventoFiltro = (event) => {
+    this.setState({ filtro: event.target.value });
+  };
+
+  ordenarUsuarios = () => {
+    const { usuarios, ordenarPor, orden, filtro } = this.state;
+    const usuariosArray = Object.values(usuarios);
+
+    return usuariosArray
+      .filter((usuario) => {
+        // Verificar si usuario.documento es una cadena antes de usar includes
+        const documento = usuario.documento && typeof usuario.documento === 'string' ? usuario.documento : '';
+
+        return usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+          usuario.apellido.toLowerCase().includes(filtro.toLowerCase()) ||
+          documento.includes(filtro) || // Ahora verifica documento antes de usar includes
+          usuario.celular.includes(filtro) ||
+          usuario.estado.toLowerCase().includes(filtro.toLowerCase())
+      })
+      .sort((a, b) => {
+        if (orden === 'asc') {
+          return a[ordenarPor].localeCompare(b[ordenarPor]);
+        } else {
+          return b[ordenarPor].localeCompare(a[ordenarPor]);
+        }
+      });
+  };
+
   render() {
-    const { usuarios, cargando, currentPage, itemsPerPage } = this.state;
+    const { cargando, paginaActual, itemsPorPagina, usuarioSeleccionado, filtro } = this.state;
 
     if (cargando) {
       return (
@@ -42,55 +87,79 @@ class Registros extends Component {
       );
     }
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const usuariosArray = Object.values(usuarios).slice(indexOfFirstItem, indexOfLastItem);
+    const usuariosOrdenados = this.ordenarUsuarios();
+    const indexOfLastItem = paginaActual * itemsPorPagina;
+    const indexOfFirstItem = indexOfLastItem - itemsPorPagina;
+    const usuariosPaginados = usuariosOrdenados.slice(indexOfFirstItem, indexOfLastItem);
 
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(Object.keys(usuarios).length / itemsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(usuariosOrdenados.length / itemsPorPagina); i++) {
       pageNumbers.push(i);
     }
 
     return (
       <div>
-        <div className="text-center fuente">
-          <h1 >Tabla de Usuarios</h1>
+        <div className="text-center fuente h1 m-3">
+          <h1>Tabla de Usuarios</h1>
+        </div>
+
+        <div className="form-group fuente m-4">
+          <label htmlFor="filtro">Filtrar:</label>
+          <input
+            type="text"
+            id="filtro"
+            className="campo-filtro m-2"
+            value={filtro}
+            onChange={this.eventoFiltro}
+          />
         </div>
 
         <div className="table-responsive">
-          <table className="table table-striped fuente">
+          <table className="table table-hover table-bordered  fuente m-4">
             <thead>
               <tr className='text-center'>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Documento</th>
-                <th>Celular</th>
-                <th>Estado</th>
+                <th onClick={() => this.cambiarOrden('nombre')}>Nombre</th>
+                <th onClick={() => this.cambiarOrden('apellido')}>Apellido</th>
+                <th onClick={() => this.cambiarOrden('documento')}>Documento</th>
+                <th onClick={() => this.cambiarOrden('celular')}>Celular</th>
+                <th onClick={() => this.cambiarOrden('estado')}>Estado</th>
               </tr>
             </thead>
             <tbody>
-              {usuariosArray.map((usuario, index) => (
+              {usuariosPaginados.map((usuario, index) => (
                 <tr key={index}>
                   <td>{usuario.nombre}</td>
                   <td>{usuario.apellido}</td>
                   <td>{usuario.documento}</td>
                   <td>{usuario.celular}</td>
-                  <td className={this.getColorForEstado(usuario.estado)}>{usuario.estado}</td>
+                  <td className={this.obtenerColor(usuario.estado)}>{usuario.estado}</td>
+                  <td>
+                    <button onClick={() => this.mostrarDetalle(usuario)}>Ver Detalles</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <ul className="pagination">
+      <nav>
+        <ul className="pagination px-5 pt-4">
           {pageNumbers.map(number => (
-            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => this.setState({ currentPage: number })}>
+            <li key={number} className={`page-item ${paginaActual === number ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => this.setState({ paginaActual: number })}>
                 {number}
               </button>
             </li>
           ))}
         </ul>
+        </nav>
+        <div>
+          {usuarioSeleccionado && (
+            <RegistoUsuario
+              usuarioSeleccionado={usuarioSeleccionado}
+              onClose={() => this.setState({ usuarioSeleccionado: null })}
+            />
+          )}
+        </div>
       </div>
     );
   }
