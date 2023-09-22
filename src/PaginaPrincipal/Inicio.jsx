@@ -6,7 +6,7 @@ import Logo from "../img/Logo_SC.png";
 import './Style.css';
 
 
-function Home() {
+function Inicio () {
   return (
     <div>
       <div className="container d-flex justify-content-center align-items-center m-auto mt-2">
@@ -23,4 +23,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Inicio;

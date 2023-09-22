@@ -94,13 +94,13 @@ class Registros extends Component {
     }
 
     const usuariosOrdenados = this.ordenarUsuarios();
-    const indexOfLastItem = paginaActual * this.state.itemsPorPagina;
-    const indexOfFirstItem = indexOfLastItem - this.state.itemsPorPagina;
-    const usuariosPaginados = usuariosOrdenados.slice(indexOfFirstItem, indexOfLastItem);
+    const ultimoElementoLista = paginaActual * this.state.itemsPorPagina;
+    const primerElementoLista = ultimoElementoLista - this.state.itemsPorPagina;
+    const usuariosPaginados = usuariosOrdenados.slice(primerElementoLista, ultimoElementoLista);
 
-    const pageNumbers = [];
+    const numeroPaginas = [];
     for (let i = 1; i <= Math.ceil(usuariosOrdenados.length / itemsPorPagina); i++) {
-      pageNumbers.push(i);
+      numeroPaginas.push(i);
     }
 
     return (
@@ -168,7 +168,7 @@ class Registros extends Component {
         </div>
         <nav>
           <ul className="pagination px-5 pt-4">
-            {pageNumbers.map(number => (
+            {numeroPaginas.map(number => (
               <li key={number} className={`page-item ${paginaActual === number ? 'active' : ''}`}>
                 <button className="page-link" onClick={() => this.setState({ paginaActual: number })}>
                   {number}
