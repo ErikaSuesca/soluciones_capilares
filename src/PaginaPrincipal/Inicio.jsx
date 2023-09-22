@@ -13,7 +13,7 @@ function Home() {
         <img src={Logo} alt="logoSolucionesCapilares" className="img-fluid w-25" />
       </div>
       <div className="container d-flex justify-content-center align-text-center mb-3 mt-3">
-        <h1 className="display-4 fs-4 ">¡Bienvenidos a nuestro sitio Web!</h1>
+        <h1 className="display-4 fs-2 ">¡Bienvenidos a nuestro sitio Web!</h1>
       </div>
       <Introduccion />
       <BotonRegistro />

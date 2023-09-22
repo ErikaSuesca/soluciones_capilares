@@ -53,6 +53,11 @@ class Registros extends Component {
     this.setState({ filtro: event.target.value });
   };
 
+  cambiarCantidadPorPagina = (event) => {
+    const nuevaCantidad = parseInt(event.target.value, 10); // Convierte el valor a número
+    this.setState({ itemsPorPagina: nuevaCantidad });
+  };
+
   ordenarUsuarios = () => {
     const { usuarios, ordenarPor, orden, filtro } = this.state;
     const usuariosArray = Object.values(usuarios);
@@ -89,8 +94,8 @@ class Registros extends Component {
     }
 
     const usuariosOrdenados = this.ordenarUsuarios();
-    const indexOfLastItem = paginaActual * itemsPorPagina;
-    const indexOfFirstItem = indexOfLastItem - itemsPorPagina;
+    const indexOfLastItem = paginaActual * this.state.itemsPorPagina;
+    const indexOfFirstItem = indexOfLastItem - this.state.itemsPorPagina;
     const usuariosPaginados = usuariosOrdenados.slice(indexOfFirstItem, indexOfLastItem);
 
     const pageNumbers = [];
@@ -105,31 +110,34 @@ class Registros extends Component {
         </div>
 
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-md-6">
-              <div className="form-group fuente m-4 text-center">
-                <label htmlFor="filtro">Filtrar:</label>
-                <input
-                  type="text"
-                  id="filtro"
-                  className="campo-filtro m-2"
-                  value={filtro}
-                  onChange={this.eventoFiltro}
-                />
-              </div>
+          <div className="row align-items-center form-group fuente m-4 text-center">
+            <div className="col-md-4">
+              <label htmlFor="filtro">Filtrar:</label>
+              <input
+                type="text"
+                id="filtro"
+                className="form-control"
+                value={filtro}
+                onChange={this.eventoFiltro}
+              />
             </div>
-            <div className="col-md-6 text-center " >
+            <div className='col-md-4'>
+              <label htmlFor="itemsPorPagina">Elementos por página:</label>
+              <select
+                id="itemsPorPagina"
+                className="form-control"
+                value={this.state.itemsPorPagina}
+                onChange={this.cambiarCantidadPorPagina}
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+            <div className="col-md-4 text-center " >
               <BtnAtras />
             </div>
           </div>
         </div>
-
-
-          
-          
-          
-
-
         <div className="table-responsive">
           <table className="table table-hover table-bordered  fuente">
             <thead>
@@ -158,16 +166,16 @@ class Registros extends Component {
             </tbody>
           </table>
         </div>
-      <nav>
-        <ul className="pagination px-5 pt-4">
-          {pageNumbers.map(number => (
-            <li key={number} className={`page-item ${paginaActual === number ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => this.setState({ paginaActual: number })}>
-                {number}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <nav>
+          <ul className="pagination px-5 pt-4">
+            {pageNumbers.map(number => (
+              <li key={number} className={`page-item ${paginaActual === number ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => this.setState({ paginaActual: number })}>
+                  {number}
+                </button>
+              </li>
+            ))}
+          </ul>
         </nav>
         <div>
           {usuarioSeleccionado && (
